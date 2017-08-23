@@ -3,17 +3,20 @@
 include_directories(../..)
 
 set(DD_CFLAGS ${SANITIZER_COMMON_CFLAGS})
-append_no_rtti_flag(DD_CFLAGS)
+append_rtti_flag(OFF DD_CFLAGS)
 
 set(DD_SOURCES
   dd_rtl.cc
   dd_interceptors.cc
 )
 
-set(DD_LINKLIBS)
+set(DD_LINKLIBS ${SANITIZER_COMMON_LINK_LIBS})
+
 append_list_if(COMPILER_RT_HAS_LIBDL dl DD_LINKLIBS)
 append_list_if(COMPILER_RT_HAS_LIBRT rt DD_LINKLIBS)
 append_list_if(COMPILER_RT_HAS_LIBPTHREAD pthread DD_LINKLIBS)
+
+list(APPEND DD_LINKLIBS ${SANITIZER_CXX_ABI_LIBRARY})
 
 add_custom_target(dd)
 # Deadlock detector is currently supported on 64-bit Linux only.
@@ -40,6 +43,7 @@ if(CAN_TARGET_x86_64 AND UNIX AND NOT APPLE AND NOT ANDROID)
             $<TARGET_OBJECTS:RTInterception.${arch}>
             $<TARGET_OBJECTS:RTSanitizerCommon.${arch}>
             $<TARGET_OBJECTS:RTSanitizerCommonLibc.${arch}>
+    LINK_FLAGS ${SANITIZER_COMMON_LINK_FLAGS}
     LINK_LIBS ${DD_LINKLIBS}
     PARENT_TARGET dd)
 endif()

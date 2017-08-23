@@ -10,12 +10,34 @@ struct foo<0> {};
 // CHECK: {{^name:[ ]+'foo<2>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
 // CHECK: {{^event:[ ]+Begin$}}
-// CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:}}[[@LINE+26]]{{:8'$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:}}[[@LINE+59]]{{:8'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'foo<2>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+End$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:}}[[@LINE+54]]{{:8'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'foo<2>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+Begin$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:}}[[@LINE+49]]{{:8'$}}
+//
 // CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'foo<1>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
 // CHECK: {{^event:[ ]+Begin$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:4:14'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'foo<1>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+End$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:4:14'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'foo<1>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+Begin$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:4:14'$}}
+//
 // CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'foo<0>'$}}
 // CHECK: {{^kind:[ ]+Memoization$}}
@@ -26,9 +48,20 @@ struct foo<0> {};
 // CHECK: {{^kind:[ ]+Memoization$}}
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:4:14'$}}
+//
 // CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'foo<1>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+End$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:4:14'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'foo<1>'$}}
+// CHECK: {{^kind:[ ]+Memoization$}}
+// CHECK: {{^event:[ ]+Begin$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:4:14'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'foo<1>'$}}
+// CHECK: {{^kind:[ ]+Memoization$}}
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:4:14'$}}
 // CHECK-LABEL: {{^---$}}
@@ -37,4 +70,3 @@ struct foo<0> {};
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-template-instantiation.cpp:}}[[@LINE+1]]{{:8'$}}
 foo<2> x;
-

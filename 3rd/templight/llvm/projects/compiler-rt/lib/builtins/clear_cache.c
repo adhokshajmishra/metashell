@@ -14,7 +14,16 @@
 #if __APPLE__
   #include <libkern/OSCacheControl.h>
 #endif
-#if (defined(__FreeBSD__) || defined(__Bitrig__)) && defined(__arm__)
+
+#if defined(_WIN32)
+/* Forward declare Win32 APIs since the GCC mode driver does not handle the
+   newer SDKs as well as needed.  */
+uint32_t FlushInstructionCache(uintptr_t hProcess, void *lpBaseAddress,
+                               uintptr_t dwSize);
+uintptr_t GetCurrentProcess(void);
+#endif
+
+#if defined(__FreeBSD__) && defined(__arm__)
   #include <sys/types.h>
   #include <machine/sysarch.h>
 #endif
@@ -32,7 +41,7 @@
      * clear_mips_cache - Invalidates instruction cache for Mips.
      */
     static void clear_mips_cache(const void* Addr, size_t Size) {
-      asm volatile (
+      __asm__ volatile (
         ".set push\n"
         ".set noreorder\n"
         ".set noat\n"
@@ -73,10 +82,6 @@
   #endif
 #endif
 
-#if defined(__ANDROID__) && defined(__arm__)
-  #include <asm/unistd.h>
-#endif
-
 /*
  * The compiler generates calls to __clear_cache() when creating 
  * trampoline functions on the stack for use with nested functions.
@@ -85,29 +90,42 @@
  */
 
 void __clear_cache(void *start, void *end) {
-#if __i386__ || __x86_64__
+#if __i386__ || __x86_64__ || defined(_M_IX86) || defined(_M_X64)
 /*
  * Intel processors have a unified instruction and data cache
  * so there is nothing to do
  */
 #elif defined(__arm__) && !defined(__APPLE__)
-    #if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__Bitrig__)
+    #if defined(__FreeBSD__) || defined(__NetBSD__)
         struct arm_sync_icache_args arg;
 
         arg.addr = (uintptr_t)start;
         arg.len = (uintptr_t)end - (uintptr_t)start;
 
         sysarch(ARM_SYNC_ICACHE, &arg);
-    #elif defined(__ANDROID__)
+    #elif defined(__linux__)
+    /*
+     * We used to include asm/unistd.h for the __ARM_NR_cacheflush define, but
+     * it also brought many other unused defines, as well as a dependency on
+     * kernel headers to be installed.
+     *
+     * This value is stable at least since Linux 3.13 and should remain so for
+     * compatibility reasons, warranting it's re-definition here.
+     */
+    #define __ARM_NR_cacheflush 0x0f0002
          register int start_reg __asm("r0") = (int) (intptr_t) start;
          const register int end_reg __asm("r1") = (int) (intptr_t) end;
          const register int flags __asm("r2") = 0;
          const register int syscall_nr __asm("r7") = __ARM_NR_cacheflush;
-        __asm __volatile("svc 0x0" : "=r"(start_reg)
-            : "r"(syscall_nr), "r"(start_reg), "r"(end_reg), "r"(flags) : "r0");
+         __asm __volatile("svc 0x0"
+                          : "=r"(start_reg)
+                          : "r"(syscall_nr), "r"(start_reg), "r"(end_reg),
+                            "r"(flags));
          if (start_reg != 0) {
              compilerrt_abort();
          }
+    #elif defined(_WIN32)
+        FlushInstructionCache(GetCurrentProcess(), start, end - start);
     #else
         compilerrt_abort();
     #endif
@@ -147,6 +165,21 @@ void __clear_cache(void *start, void *end) {
   for (addr = xstart; addr < xend; addr += icache_line_size)
     __asm __volatile("ic ivau, %0" :: "r"(addr));
   __asm __volatile("isb sy");
+#elif defined (__powerpc64__)
+  const size_t line_size = 32;
+  const size_t len = (uintptr_t)end - (uintptr_t)start;
+
+  const uintptr_t mask = ~(line_size - 1);
+  const uintptr_t start_line = ((uintptr_t)start) & mask;
+  const uintptr_t end_line = ((uintptr_t)start + len + line_size - 1) & mask;
+
+  for (uintptr_t line = start_line; line < end_line; line += line_size)
+    __asm__ volatile("dcbf 0, %0" : : "r"(line));
+  __asm__ volatile("sync");
+
+  for (uintptr_t line = start_line; line < end_line; line += line_size)
+    __asm__ volatile("icbi 0, %0" : : "r"(line));
+  __asm__ volatile("isync");
 #else
     #if __APPLE__
         /* On Darwin, sys_icache_invalidate() provides this functionality */
@@ -156,4 +189,3 @@ void __clear_cache(void *start, void *end) {
     #endif
 #endif
 }
-

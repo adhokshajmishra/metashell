@@ -17,8 +17,14 @@ foo<int> x;
 
 // CHECK-LABEL: {{^---$}}
 // CHECK-LABEL: {{^---$}}
-
 // CHECK-LABEL: {{^---$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK-LABEL: {{^---$}}
+
 // CHECK: {{^name:[ ]+'foo<int>'$}}
 // CHECK: {{^kind:[ ]+Memoization$}}
 // CHECK: {{^event:[ ]+Begin$}}

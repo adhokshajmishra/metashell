@@ -17,6 +17,7 @@
 #include "sanitizer_common/sanitizer_linux.h"
 
 #include "sanitizer_common/sanitizer_common.h"
+#include "sanitizer_common/sanitizer_file.h"
 #include "gtest/gtest.h"
 
 #include <pthread.h>
@@ -262,6 +263,41 @@ TEST(SanitizerLinux, ThreadSelfTest) {
   ASSERT_EQ(pthread_self(), ThreadSelf());
 }
 #endif
+
+TEST(SanitizerCommon, StartSubprocessTest) {
+  int pipe_fds[2];
+  ASSERT_EQ(0, pipe(pipe_fds));
+#if SANITIZER_ANDROID
+  const char *shell = "/system/bin/sh";
+#else
+  const char *shell = "/bin/sh";
+#endif
+  const char *argv[] = {shell, "-c", "echo -n 'hello'", (char *)NULL};
+  int pid = StartSubprocess(shell, argv,
+                            /* stdin */ kInvalidFd, /* stdout */ pipe_fds[1]);
+  ASSERT_GT(pid, 0);
+
+  // wait for process to finish.
+  while (IsProcessRunning(pid)) {
+  }
+  ASSERT_FALSE(IsProcessRunning(pid));
+
+  char buffer[256];
+  {
+    char *ptr = buffer;
+    uptr bytes_read;
+    while (ReadFromFile(pipe_fds[0], ptr, 256, &bytes_read)) {
+      if (!bytes_read) {
+        break;
+      }
+      ptr += bytes_read;
+    }
+    ASSERT_EQ(5, ptr - buffer);
+    *ptr = 0;
+  }
+  ASSERT_EQ(0, strcmp(buffer, "hello")) << "Buffer: " << buffer;
+  internal_close(pipe_fds[0]);
+}
 
 }  // namespace __sanitizer
 

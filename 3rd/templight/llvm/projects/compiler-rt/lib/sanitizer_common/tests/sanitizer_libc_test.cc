@@ -11,6 +11,7 @@
 #include <algorithm>
 
 #include "sanitizer_common/sanitizer_common.h"
+#include "sanitizer_common/sanitizer_file.h"
 #include "sanitizer_common/sanitizer_libc.h"
 #include "sanitizer_common/sanitizer_platform.h"
 #include "gtest/gtest.h"
@@ -24,6 +25,8 @@
 # include <sys/stat.h>
 # include "sanitizer_common/sanitizer_posix.h"
 #endif
+
+using namespace __sanitizer;
 
 // A regression test for internal_memmove() implementation.
 TEST(SanitizerCommon, InternalMemmoveRegression) {

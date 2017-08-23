@@ -14,4 +14,3 @@ struct foo {};
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-one-instantiation.cpp:}}[[@LINE+1]]{{:10'$}}
 foo<int> x;
-

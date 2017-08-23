@@ -22,17 +22,50 @@ struct fib<1>
 // CHECK: {{^name:[ ]+'fib<4>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
 // CHECK: {{^event:[ ]+Begin$}}
-// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:}}[[@LINE+66]]{{:8'$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:}}[[@LINE+124]]{{:8'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<4>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+End$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:}}[[@LINE+119]]{{:8'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<4>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+Begin$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:}}[[@LINE+114]]{{:8'$}}
+//
 // CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'fib<3>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
 // CHECK: {{^event:[ ]+Begin$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
 // CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<3>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+End$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<3>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+Begin$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+//
+// CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'fib<2>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
 // CHECK: {{^event:[ ]+Begin$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<2>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+End$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<2>'$}}
+// CHECK: {{^kind:[ ]+TemplateInstantiation$}}
+// CHECK: {{^event:[ ]+Begin$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+
 // CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'fib<1>'$}}
 // CHECK: {{^kind:[ ]+Memoization$}}
@@ -53,11 +86,23 @@ struct fib<1>
 // CHECK: {{^kind:[ ]+Memoization$}}
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:46'$}}
+//
 // CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'fib<2>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<2>'$}}
+// CHECK: {{^kind:[ ]+Memoization$}}
+// CHECK: {{^event:[ ]+Begin$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<2>'$}}
+// CHECK: {{^kind:[ ]+Memoization$}}
+// CHECK: {{^event:[ ]+End$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+//
 // CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'fib<1>'$}}
 // CHECK: {{^kind:[ ]+Memoization$}}
@@ -68,12 +113,24 @@ struct fib<1>
 // CHECK: {{^kind:[ ]+Memoization$}}
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:46'$}}
+//
 // CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'fib<3>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
 // CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<3>'$}}
+// CHECK: {{^kind:[ ]+Memoization$}}
+// CHECK: {{^event:[ ]+Begin$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+// CHECK-LABEL: {{^---$}}
+// CHECK: {{^name:[ ]+'fib<3>'$}}
+// CHECK: {{^kind:[ ]+Memoization$}}
+// CHECK: {{^event:[ ]+End$}}
+// CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:28'$}}
+//
+// CHECK-LABEL: {{^---$}}
 // CHECK: {{^name:[ ]+'fib<2>'$}}
 // CHECK: {{^kind:[ ]+Memoization$}}
 // CHECK: {{^event:[ ]+Begin$}}
@@ -84,6 +141,7 @@ struct fib<1>
 // CHECK: {{^event:[ ]+End$}}
 // CHECK: {{^poi:[ ]+'.*templight-nested-memoization.cpp:6:46'$}}
 // CHECK-LABEL: {{^---$}}
+//
 // CHECK: {{^name:[ ]+'fib<4>'$}}
 // CHECK: {{^kind:[ ]+TemplateInstantiation$}}
 // CHECK: {{^event:[ ]+End$}}
