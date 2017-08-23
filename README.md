@@ -1,5 +1,7 @@
 # Metashell
 
+### This version has been ported to LLVM revision 311449
+
 ![](https://raw.githubusercontent.com/metashell/metashell/master/docs/img/metashell.png "Metashell")
 
 [![Try online](https://raw.githubusercontent.com/metashell/metashell/master/docs/img/try_online.png "Try online")](http://metashell.org/about/demo)
